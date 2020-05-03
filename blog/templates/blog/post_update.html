@@ -1,0 +1,28 @@
+{% extends 'base_layout.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+    Edit This Post | {{ block.super }}
+{% endblock %}
+
+{% block content %}
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <h2></h2>
+        <fieldset>
+            <legend>Post Images</legend>
+            {{ image_form.as_p }}
+            <!-- {{ image_form.non_form_errors }}
+            {% for form in image_form %}
+                {{ form.id }}
+                <div class="inline {{ image_form.prefix }}">
+                    {{ form.image.errors }}
+                    {{ form.image.label_tag }}
+                    {{ form.image }}
+                </div>
+            {% endfor %} -->
+        </fieldset>
+
+        <input type="submit" value="Save Changes" class="btn btn-outline-dark btn-block">
+    </form>
+{% endblock %}

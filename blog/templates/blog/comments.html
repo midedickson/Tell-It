@@ -1,0 +1,53 @@
+{% load crispy_forms_tags %}
+{{ comments.count }} Comment{{ comments|pluralize }}
+    <div class="container-fluid mt-2">
+        <div class="form-group row">
+            <form method="POST" class="comment-form" action=".">
+                {% csrf_token %}
+                <h4>Write a New Comment</h4>
+                <div class="messagebox">
+                    {{ comment_form|crispy }}
+                    {% if user.is_authenticated %}
+                        <input type="submit" value="Post Comment" class="btn btn-info">
+                    {% else %}
+                        <input type="submit" value="Post Comment" class="btn btn-info" disabled>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
+        
+        <br>
+        <br>
+        {% for comment in comments %}
+        <hr>
+        <blockquote class="blockquote text-left">
+            <p class="mb-0"><small>{{ comment.content }}</small></p>
+            <footer class="blockquote-footer"><small>by <cite title="Source Title">{{ comment.user|capfirst }}</cite></small>
+                <button type="button" name="button" class="reply-btn btn btn-outline-dark btn-sm ml-2">Reply</button>
+            </footer>
+        </blockquote>
+        <div class="replied-comments container mt-2" style="display:none;">
+            {% for reply in comment.replies.all %}
+                <blockquote class="blockquote text-left">
+                    <p class="mb-0"><small>{{ reply.content }}</small></p>
+                    <footer class="blockquote-footer"><small>by <cite title="Source Title">{{ reply.user|capfirst }}</cite></small></footer>
+                </blockquote>
+            {% endfor %}
+            <div class="form-group row">
+                <form method="POST" class="reply-form" action=".">
+                    {% csrf_token %}
+                    <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                    <h6>Reply this comment</h6>
+                    <div class="messagebox">
+                        {{ comment_form|crispy }}
+                        {% if user.is_authenticated %}
+                            <input type="submit" value="Reply" class="btn btn-info">
+                        {% else %}
+                            <input type="submit" value="Reply" class="btn btn-info" disabled>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% endfor %}

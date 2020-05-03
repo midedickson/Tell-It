@@ -1,0 +1,46 @@
+{% extends 'base_layout.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+    {{ post.title }} | {{ block.super }}
+{% endblock %}
+
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}" role="alert">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+
+    <h3>{{ post.title }}</h3>
+    <small>Post created by: {{ post.author }}</small>
+    <hr>
+    <div class="row gallery">
+        {% for post_img in post.image_set.all %}
+            <div class="col-md-3">
+                <img src="{{ post_img.image.url }}" alt="Image Not Found" class="img-thumbnail"/>
+            </div>
+        {% endfor %}
+    </div>
+    <br><br>
+    <hr>
+    <p>{{ post.body }}</p>
+    <hr>
+    
+    <div id="like-section">
+        {% include 'blog/like_section.html' %}
+    </div>
+    {% if post.author == request.user %}
+        <div class="section-1" style="float:right">
+            <a href="{% url 'blog:post_edit' pk=post.id slug=post.slug %}">
+                <button type="button" class="btn btn-outline-info">Edit</button>
+            </a>
+
+            <a href="{% url 'blog:post_delete' pk=post.id slug=post.slug %}" id="delete">
+                <button type="button" class="btn btn-danger">Delete</button>
+            </a>
+        </div>
+    {% endif %}
+    <div class="main-comment-section">
+        {% include 'blog/comments.html' %}
+    </div>
+{% endblock %}

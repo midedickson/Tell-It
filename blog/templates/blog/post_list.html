@@ -1,0 +1,34 @@
+{% extends 'base_layout.html' %}
+
+{% block title %} Welcome to {{ block.super }}{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        {% for p in posts %}
+        <!-- <div class="col-lg-6"> -->
+            <!-- <d"card shadow-lg"> -->
+                <div class="img-thumbnail shadow-lg col-lg-6">
+                    <div class="">
+                        <a href="{% url 'blog:post_detail' slug=p.slug pk=p.id%}">{{ p.title }}</a><small style="float:right">{{ p.created }}</small><br>
+                    </div> 
+                    <div class="">
+                        {{ p.body }}
+                        <br>
+                        Author: {{ p.author }}
+                        
+                    </div>
+                </div>
+
+        {% empty %}
+            <div class="container-fluid">
+                <h3>No result(s) found matching search: <i>"{{ request.GET.q }}"</i></h3>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<br><br><br>
+
+{% include 'blog/pagination.html' with posts=page_obj %}
+{% endblock %}
+
