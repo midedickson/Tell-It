@@ -25,10 +25,6 @@
     <hr>
     <p>{{ post.body }}</p>
     <hr>
-    
-    <div id="like-section">
-        {% include 'blog/like_section.html' %}
-    </div>
     {% if post.author == request.user %}
         <div class="section-1" style="float:right">
             <a href="{% url 'blog:post_edit' pk=post.id slug=post.slug %}">
@@ -40,7 +36,14 @@
             </a>
         </div>
     {% endif %}
-    <div class="main-comment-section">
-        {% include 'blog/comments.html' %}
+    
+    <div id="like-section">
+        {% include 'blog/like_section.html' %}
     </div>
+
+    {% if not post.restrict_comments %}
+        <div class="main-comment-section">
+            {% include 'blog/comments.html' %}
+        </div>
+    {% endif %}
 {% endblock %}

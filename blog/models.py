@@ -27,7 +27,7 @@ class Post(models.Model):
     objects = models.Manager()
     likes =  models.ManyToManyField(User, related_name='likes', blank=True)
     published = Publisher() #Custom model manager.
-    # thumb = models.ImageField
+    restrict_comments = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['-id']

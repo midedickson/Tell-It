@@ -12,6 +12,7 @@ class PostModelForm(forms.ModelForm):
             'title',
             'body',
             'status',
+            'restrict_comments',
         ]
 
 class PostEditForm(forms.ModelForm):
@@ -21,6 +22,7 @@ class PostEditForm(forms.ModelForm):
             'title',
             'body',
             'status',
+            'restrict_comments',
         ]
 
 ImageFormSet = inlineformset_factory(Post, Image, extra=4, fields=('image',))
