@@ -41,6 +41,18 @@
         {% include 'blog/like_section.html' %}
     </div>
 
+    <div id="favorite-section">
+        {% if is_favourite %}
+            <a href="{% url 'blog:favourite_post' pk=post.id slug=post.slug %}">
+                <i class="fas fa-heart fa-lg"></i>
+            </a>
+        {% else %}
+            <a href="{% url 'blog:favourite_post' pk=post.id slug=post.slug %}">
+                <i class="far fa-heart fa-lg"></i>
+            </a>
+        {% endif %}
+    </div>
+
     {% if not post.restrict_comments %}
         <div class="main-comment-section">
             {% include 'blog/comments.html' %}

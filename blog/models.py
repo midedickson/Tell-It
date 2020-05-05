@@ -28,6 +28,7 @@ class Post(models.Model):
     likes =  models.ManyToManyField(User, related_name='likes', blank=True)
     published = Publisher() #Custom model manager.
     restrict_comments = models.BooleanField(default=False)
+    favourites = models.ManyToManyField(User, related_name='favourites', blank=True)
 
     class Meta:
         ordering = ['-id']

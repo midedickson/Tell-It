@@ -58,10 +58,14 @@ class PostDetail(FormMixin, DetailView):
         pk = self.kwargs.get('pk')
         slug = self.kwargs.get('slug')
         is_liked = False
+        is_favourite = False
         post = get_object_or_404(Post, id=pk, slug=slug)
         if post.likes.filter(id=self.request.user.id).exists():
             is_liked = True
+        if post.favourites.filter(id=self.request.user.id).exists():
+            is_favourite = True
         context['is_liked'] = is_liked
+        context['is_favourite'] = is_favourite
         context['total_likes'] = post.total_likes()
         context['comments'] = Comment.objects.filter(post=self.object, reply=None).order_by('-id')
         context['comment_form'] = self.get_form()
@@ -89,6 +93,42 @@ class PostDetail(FormMixin, DetailView):
             html = render_to_string('blog/comments.html', self.get_context_data(), request=self.request)
             data = {'form': html}
             return JsonResponse(data)
+
+def favourite_post(request, pk, slug):
+    post = get_object_or_404(Post, id=pk, slug=slug)
+    if post.favourites.filter(id=request.user.id).exists():
+        post.favourites.remove(request.user)
+        is_favourite = False
+    else:
+        post.favourites.add(request.user)
+        is_favourite = True
+    return HttpResponseRedirect(post.get_absolute_url())
+
+class FavPostList(generic.ListView):
+    template_name = 'blog/post_favourite_list.html'
+    context_object_name = 'favourite_posts'
+    paginate_by = 5
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        user = self.request.user
+        if query:
+            return user.favourites.filter(
+                Q(title__icontains=query)|
+                Q(author__username=query)|
+                Q(body__icontains=query)
+            )
+        else:
+            return user.favourites.all()
+
+
+def post_favourite_list(request):
+    user = request.user
+    favourite_posts = user.favourites.all()
+    context = {
+        'favourite_posts': favourite_posts
+    }
+    return render(request, 'blog/post_favourite_list.html', context)
 
 def like_post(request):
     post = get_object_or_404(Post, id=request.POST.get('post_id'))

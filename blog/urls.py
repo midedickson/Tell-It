@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import PostList, PostCreate, SignUpView, ProfileView, ProfileUpdateView, post_delete, PostUpdate, PostDetail
+from .views import PostList, PostCreate, SignUpView, ProfileView, ProfileUpdateView, post_delete, PostUpdate, PostDetail, FavPostList
 from . import views
 app_name = 'blog'
 urlpatterns = [
@@ -13,4 +13,6 @@ urlpatterns = [
     path('profile/', ProfileView.as_view(), name="user_profile"),
     path('profile_update/', ProfileUpdateView.as_view(), name="profile_update"),
     path('like/', views.like_post, name="like_post"),
+    path('<int:pk>/<slug:slug>/favourite_post/', views.favourite_post, name="favourite_post"),
+    path('favourite_post_list/', FavPostList.as_view(), name="favourite_post_list"),
 ]
