@@ -18,6 +18,7 @@ class Post(models.Model):
     )
 
     title = models.CharField(max_length=100)
+    cover_photo = models.ImageField(upload_to='images/', blank=False, null=False, default='images/download.png')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     slug = models.SlugField(max_length=120)
@@ -35,6 +36,9 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    def snippet(self):
+        return self.body[:100] + "..."
 
     def get_absolute_url(self):
         return reverse("blog:post_detail", kwargs={"pk": self.id, "slug": self.slug})

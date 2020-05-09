@@ -1,4 +1,31 @@
-<nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light">
+<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm sticky-top">
+    <h5 class="my-0 mr-md-auto font-weight-normal"><a class="navbar-brand" href="{% url 'blog:post_list' %}">Tell It!</a></h5>
+    <form class="form-inline my-2 my-lg-0" action="{% url 'blog:post_list' %}">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="q">
+        <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    <nav class="my-2 my-md-0 mr-md-0 navbar">
+        {% if request.user.is_authenticated %}
+            <div class="dropdown p-2 text-dark">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                   <img src="{{ request.user.profile.photo.url }}" alt="" class="navbar-img">
+                    <span class="h">Hi {{ request.user|capfirst }}</span>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{% url 'blog:user_profile' %}">My Profile <i class="fas fa-address-card"></i></a>
+                    <a class="dropdown-item" href="{% url 'blog:post_create' %}">New Post <i class="fas fa-plus"></i></a>
+                    <a class="dropdown-item" href="{% url 'blog:favourite_post_list' %}">Favourite Posts <i class="far fa-star"></i></a>
+                    <a class="dropdown-item" href="{% url 'user_logout' %}">Logout <i class="fas fa-sign-out-alt"></i></a>
+                </div>
+            </div>
+        {% else %}
+            <div class="navbar-nav"><a href="{% url 'blog:user_register' %}" style="text-decoration: none" class="p-2 text-dark btn-outline-primary">Register <i class="fas fa-user-plus"></i></a></div>
+            <div class="navbar-nav"><a href="{% url 'user_login' %}" style="text-decoration: none" class="p-2 text-dark btn-outline-primary">Login <i class="fas fa-sign-in-alt"></i></a></div>
+        {% endif %}
+    </nav>
+  </div>
+
+<!-- <nav class="navbar mynavbar sticky-top navbar-expand-lg navbar-light bg-light container">
     <a class="navbar-brand" href="{% url 'blog:post_list' %}">Tell It!</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -9,7 +36,6 @@
         <a class="nav-item nav-link" href="#"></a>
         
         
-        <!--  -->
         <form class="form-inline my-2 my-lg-0" action="{% url 'blog:post_list' %}">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="q">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
@@ -37,4 +63,4 @@
             {% endif %}
         </div>
     </div>
-</nav>
+</nav> -->

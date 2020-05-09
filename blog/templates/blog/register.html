@@ -26,11 +26,11 @@
                   <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form | crispy }}
-                    <button type="submit" class="btn btn-success btn-block">Sign Up!</button>
+                    <button type="submit" class="btn btn-primary btn-block">Sign Up!</button>
                   </form>
                   <hr>
                   <div class="text-center">
-                    <small>Already have an account? <a href="{% url 'user_login' %}">Sign Up!</a></small>
+                    <small>Already have an account? <a href="{% url 'user_login' %}">Log In!</a></small>
                     <br>
                     <a class="small" href="{% url 'blog:post_list' %}">Back</a>
                   </div>

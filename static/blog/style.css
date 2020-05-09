@@ -40,3 +40,16 @@ body {
 .footer p{
     text-align: justify;
 }
+
+.posts{
+    height: 250px;
+}
+
+/* nav div a.text-dark{
+    background-color: blue;
+}
+
+nav div a.text-dark:hover{
+    background-color: white;
+    text-decoration-color: blue;
+} */

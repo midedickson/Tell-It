@@ -23,8 +23,7 @@ from extra_views import CreateWithInlinesView, UpdateWithInlinesView, InlineForm
 class PostList(generic.ListView):
     template_name = 'blog/post_list.html'
     context_object_name = 'posts'
-    paginate_by = 5
-
+    paginate_by = 15
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query:
@@ -35,6 +34,7 @@ class PostList(generic.ListView):
             )
         else:
             return Post.published.all()
+
 
 class PostDetail(FormMixin, DetailView):
     template_name = 'blog/post_detail.html'
@@ -120,15 +120,6 @@ class FavPostList(generic.ListView):
             )
         else:
             return user.favourites.all()
-
-
-def post_favourite_list(request):
-    user = request.user
-    favourite_posts = user.favourites.all()
-    context = {
-        'favourite_posts': favourite_posts
-    }
-    return render(request, 'blog/post_favourite_list.html', context)
 
 def like_post(request):
     post = get_object_or_404(Post, id=request.POST.get('post_id'))
@@ -221,7 +212,7 @@ class PostUpdate(LoginRequiredMixin, generic.UpdateView):
     def get_context_data(self, **kwargs):
         context = super(PostUpdate, self).get_context_data(**kwargs)
         if self.request.POST:
-            context['form'] = PostModelForm(self.request.POST)
+            context['form'] = PostModelForm(self.request.POST, self.request.FILES)
             context['image_form'] = ImageFormSet(self.request.POST, self.request.FILES)
         else:
             context['form'] = PostModelForm(instance=self.object)

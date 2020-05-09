@@ -5,3 +5,5 @@ change btn colors and user profile link to blue
 Just In case
 users = User.objects.all().select_related('profile')
 set up the update view
+make the colors even
+theme is blue

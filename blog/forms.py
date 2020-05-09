@@ -9,6 +9,7 @@ class PostModelForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = [
+            'cover_photo',
             'title',
             'body',
             'status',
@@ -19,13 +20,14 @@ class PostEditForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = [
+            'cover_photo',
             'title',
             'body',
             'status',
             'restrict_comments',
         ]
 
-ImageFormSet = inlineformset_factory(Post, Image, extra=4, fields=('image',))
+ImageFormSet = inlineformset_factory(Post, Image, extra=3, fields=('image',))
 
 
 class SignUpForm(UserCreationForm):

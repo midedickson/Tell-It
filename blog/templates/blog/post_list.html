@@ -5,32 +5,46 @@ Welcome to {{ block.super }}
 {% endblock %}
 {% block content %}
 <div class="container-fluid">
-    <div class="row">
-        {% for p in posts %}
-        <!-- <div class="col-lg-6"> -->
-            <!-- <d"card shadow-lg"> -->
-                <div class="img-thumbnail shadow-lg col-lg-6">
-                    <div class="">
-                        <a href="{% url 'blog:post_detail' slug=p.slug pk=p.id%}">{{ p.title }}</a><small style="float:right">{{ p.created }}</small><br>
-                    </div> 
-                    <div class="">
-                        {{ p.body }}
-                        <br>
-                        Author: {{ p.author }}
-                        
+    {% for p in posts|slice:':1' %}
+        <div class="jumbotron p-4 p-md-5 text-white rounded bg-primary">
+            <div class="col-md-6 px-0">
+                    <h1 class="display-4 font-italic">{{ p.title }}</h1>
+                    <p class="lead my-3">{{ p.body|slice:':150' }} <br>{{ p.author }}</p>
+                    <p class="lead mb-0"><a href="{% url 'blog:post_detail' slug=p.slug pk=p.id%}" class="text-white font-weight-bold">Continue reading...</a></p>
+            </div>
+        </div>
+    {% endfor %}
+
+    <div class="container-fluid">
+        <div class="row">
+            {% for p in posts|slice:'1:' %}
+                <div class="col-md-6">
+                    <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative posts">
+                        <div class="col p-4 d-flex flex-column position-static">
+                            <h6 class="mb-0 text-srong">{{ p.title }}</h6>
+                            <div class="mb-1 text-muted">{{ p.created }}</div>
+                            <p class="mb-auto">{{ p.snippet }}<br>Author: {{ p.author }}</p>
+                            <a href="{% url 'blog:post_detail' slug=p.slug pk=p.id%}" class="stretched-link">Read More</a>
+                        </div>
+                        <div class="col-auto d-none d-lg-block">
+                            <img src="{{ p.cover_photo.url }}" alt="Image Not Found" class="img-thumbnail" width="200" height="500"/>
+                        </div>
                     </div>
                 </div>
-
-        {% empty %}
-            <div class="container-fluid">
-                <h3>No result(s) found matching search: <i>"{{ request.GET.q }}"</i></h3>
-            </div>
-        {% endfor %}
+            {% empty %}
+                <div class="container-fluid">
+                    <h3>No result(s) found matching search: <i>"{{ request.GET.q }}"</i></h3>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 </div>
+    
 
 <br><br><br>
 
 {% include 'blog/pagination.html' with posts=page_obj %}
+
+
 {% endblock %}
 
