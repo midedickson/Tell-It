@@ -41,6 +41,24 @@
                 });
             });
 
+            $(document).on('click', '#fav', function(event){
+                event.preventDefault();
+                var pk = $(this).attr("value");
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "blog:favourite_post" %}',
+                    data: {'post_id': pk, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+                    dataType: 'json',
+                    success: function(response){
+                        $('#favourite-section').html(response['form'])
+                        console.log($('#favourite-section').html(response['form']));
+                    },
+                    error: function(rs, e){
+                        console.log(rs.responseText);
+                    },
+                });
+            });
+
             $(document).on('submit', '.comment-form', function(event){
                 event.preventDefault();
                 console.log($(this).serialize());
@@ -88,7 +106,7 @@
     </head>
     <body>
         {% include 'navbar.html' %}
-        <div class="container-fluid">
+        <div class="container">
             {% block content %}
             {% endblock %}
         </div>

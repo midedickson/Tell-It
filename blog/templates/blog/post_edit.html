@@ -7,21 +7,9 @@
 {% block content %}
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form|crispy }}
-        <!-- <fieldset>
-            <legend>Post Images</legend>
-            {{ image_form.management_form }}
-            {{ image_form.non_form_errors }}
-            {% for form in image_form %}
-                {{ form.id }}
-                <div class="inline {{ image_form.prefix }}">
-                    {{ form.image.errors }}
-                    {{ form.image.label_tag }}
-                    {{ form.image }}
-                </div>
-            {% endfor %}
-        </fieldset> -->
 
+        {{ form|crispy }}
+        
         <input type="submit" value="Save Changes!" class="btn btn-info">
     </form>
 {% endblock %}

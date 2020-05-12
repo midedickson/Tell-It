@@ -33,6 +33,7 @@
                 <p><strong>Phone Number: </strong> {{user.profile.phone_number}} </p>
                 <p><strong>DOB: </strong> {{user.profile.birth_date}} </p>
                 <a href="{% url 'blog:profile_update' %}" class="btn btn-sm btn-primary shadow-sm">Update Profile</a>
+                <a href="{% url 'blog:draft_post_list' %}" class="btn btn-sm btn-primary shadow-sm">Drafted Posts</a>
             </div>
           </div>
         </div>

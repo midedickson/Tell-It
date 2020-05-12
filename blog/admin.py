@@ -4,11 +4,11 @@ from .models import Post, Profile, Image, Comment
 # Register your models here.
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('title', 'slug', 'author', 'status')
+    list_display = ('title', 'slug', 'author', 'status', 'category')
     list_filter = ('status', 'created', 'updated')
     search_fields = ('author__username', 'title')
     prepopulated_fields = {'slug': ('title',)}
-    list_editable = ('status',)
+    list_editable = ('status', 'category',)
     date_hierarchy = ('created')
 
 class ProfileAdmin(admin.ModelAdmin):

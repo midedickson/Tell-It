@@ -23,7 +23,8 @@ from extra_views import CreateWithInlinesView, UpdateWithInlinesView, InlineForm
 class PostList(generic.ListView):
     template_name = 'blog/post_list.html'
     context_object_name = 'posts'
-    paginate_by = 15
+    paginate_by = 16
+
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query:
@@ -35,6 +36,78 @@ class PostList(generic.ListView):
         else:
             return Post.published.all()
 
+    def get_context_data(self, **kwargs):
+        context = super(PostList, self).get_context_data(**kwargs)
+        context['featured_posts'] = Post.objects.filter(status='featured')
+        return context
+
+class DraftPostList(generic.ListView):
+    template_name = 'blog/draft_post_list.html'
+    context_object_name = 'draft_posts'
+    paginate_by = 16
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            return Post.drafted.filter(
+                Q(title__icontains=query)|
+                Q(author__username=query)|
+                Q(body__icontains=query)
+            )
+        else:
+            return Post.drafted.filter(author=self.request.user)
+
+class NewsCategoryList(generic.ListView):
+    template_name = 'blog/news_category.html'
+    model = Post
+    context_object_name = 'news_posts'
+    paginate_by = 16
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            return Post.news.filter(
+                Q(title__icontains=query)|
+                Q(author__username=query)|
+                Q(body__icontains=query)
+            )
+        else:
+            return Post.news.filter(status='published')
+
+
+class EntCategoryList(generic.ListView):
+    template_name = 'blog/ent_category.html'
+    model = Post
+    context_object_name = 'ent_posts'
+    paginate_by = 16
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            return Post.news.filter(
+                Q(title__icontains=query)|
+                Q(author__username=query)|
+                Q(body__icontains=query)
+            )
+        else:
+            return Post.entertainment.filter(status='published')
+
+class TechCategoryList(generic.ListView):
+    template_name = 'blog/tech_category.html'
+    model = Post
+    context_object_name = 'tech_posts'
+    paginate_by = 16
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            return Post.news.filter(
+                Q(title__icontains=query)|
+                Q(author__username=query)|
+                Q(body__icontains=query)
+            )
+        else:
+            return Post.tech.filter(status='published')
 
 class PostDetail(FormMixin, DetailView):
     template_name = 'blog/post_detail.html'
@@ -94,32 +167,22 @@ class PostDetail(FormMixin, DetailView):
             data = {'form': html}
             return JsonResponse(data)
 
-def favourite_post(request, pk, slug):
-    post = get_object_or_404(Post, id=pk, slug=slug)
+def favourite_post(request):
+    post = get_object_or_404(Post, id=request.POST.get('post_id'))
     if post.favourites.filter(id=request.user.id).exists():
         post.favourites.remove(request.user)
         is_favourite = False
     else:
         post.favourites.add(request.user)
         is_favourite = True
-    return HttpResponseRedirect(post.get_absolute_url())
-
-class FavPostList(generic.ListView):
-    template_name = 'blog/post_favourite_list.html'
-    context_object_name = 'favourite_posts'
-    paginate_by = 5
-
-    def get_queryset(self):
-        query = self.request.GET.get('q')
-        user = self.request.user
-        if query:
-            return user.favourites.filter(
-                Q(title__icontains=query)|
-                Q(author__username=query)|
-                Q(body__icontains=query)
-            )
-        else:
-            return user.favourites.all()
+    context = {
+        'post': post,
+        'is_favourite': is_favourite,
+    }
+    if request.is_ajax():
+        html = render_to_string('blog/fav_section.html', context, request=request)
+        data = {'form': html}
+        return JsonResponse(data)
 
 def like_post(request):
     post = get_object_or_404(Post, id=request.POST.get('post_id'))
@@ -138,6 +201,23 @@ def like_post(request):
         html = render_to_string('blog/like_section.html', context, request=request)
         data = {'form': html}
         return JsonResponse(data)
+
+class FavPostList(generic.ListView):
+    template_name = 'blog/post_favourite_list.html'
+    context_object_name = 'favourite_posts'
+    paginate_by = 5
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        user = self.request.user
+        if query:
+            return user.favourites.filter(
+                Q(title__icontains=query)|
+                Q(author__username=query)|
+                Q(body__icontains=query)
+            )
+        else:
+            return user.favourites.all()
     
 
 class ImageInline(InlineFormSetFactory):

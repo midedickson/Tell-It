@@ -11,12 +11,35 @@ class Publisher(models.Manager):
     def get_queryset(self):
         return super(Publisher, self).get_queryset().filter(status='published')
 
+class Drafted(models.Manager):
+    def get_queryset(self):
+        return super(Drafted, self).get_queryset().filter(status='draft')
+
+class News(models.Manager):
+    def get_queryset(self):
+        return super(News, self).get_queryset().filter(category='news')
+
+class Entertainment(models.Manager):
+    def get_queryset(self):
+        return super(Entertainment, self).get_queryset().filter(category='entertainment')
+
+class Technology(models.Manager):
+    def get_queryset(self):
+        return super(Technology, self).get_queryset().filter(category='tech')
+
+
 class Post(models.Model):
     STATUS_CHOICES = (
         ('draft', 'Draft'),
         ('published', 'Published'),
+        ('featured', 'Featured'),
     )
 
+    CATEGORY_CHOICES = (
+        ('entertainment', 'Entertainment'),
+        ('news', 'News'),
+        ('tech', 'Technology'),
+    )
     title = models.CharField(max_length=100)
     cover_photo = models.ImageField(upload_to='images/', blank=False, null=False, default='images/download.png')
     created = models.DateTimeField(auto_now_add=True)
@@ -25,9 +48,14 @@ class Post(models.Model):
     body = models.TextField(editable=True)
     author = models.ForeignKey(User, related_name='article_posts', on_delete=models.CASCADE)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='entertainment')
     objects = models.Manager()
     likes =  models.ManyToManyField(User, related_name='likes', blank=True)
     published = Publisher() #Custom model manager.
+    drafted = Drafted()
+    news = News()
+    entertainment = Entertainment()
+    tech = Technology()
     restrict_comments = models.BooleanField(default=False)
     favourites = models.ManyToManyField(User, related_name='favourites', blank=True)
 
@@ -49,7 +77,13 @@ class Post(models.Model):
 @receiver(pre_save, sender=Post)
 def pre_save_slug(sender, **kwargs):
     kwargs['instance'].slug = slugify(kwargs['instance'].title)
-    
+
+
+    class Meta:
+        verbose_name_plural = 'Categories'
+
+    def __str__(self):
+        return self.name
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

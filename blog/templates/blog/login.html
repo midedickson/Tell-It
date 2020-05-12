@@ -28,24 +28,24 @@
                 {{ form | crispy }}
                 <button type="submit" class="btn btn-sm btn-primary shadow-sm btn-block">LOGIN</button>
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-4 col-sm-6">
                         <a href="{% url 'password_reset' %}" class="mr-auto"><small>Forgot Password?</small></a>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-8 col-sm-6">
                         <small>You don't have an account? <a href="{% url 'blog:user_register' %}">Sign Up!</a></small>
                     </div>
                 </div>
               </form>
-              <p>--- OR ---</p>
+              <p class="d-flex justify-content-center">------ OR ------</p>
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-6">
                         <a href="{% url 'social:begin' 'facebook' %}" class="mr-auto">
-                            <button class="btn btn-outline-primary ">FACEBOOK</button>
+                            <button class="btn btn-outline-primary "><i class="fab fa-facebook"> Facebook</i></button>
                         </a>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-6">
                         <a href="{% url 'social:begin' 'google ouath2' %}" class="mr-auto">
-                        <button class="btn btn-outline-danger">Google+</button>
+                        <button class="btn btn-outline-danger"><i class="fab fa-google-plus"> Google</i></button>
                         </a>
                     </div>
                 </div>

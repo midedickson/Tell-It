@@ -11,16 +11,7 @@
         <h2></h2>
         <fieldset>
             <legend>Post Images</legend>
-            {{ image_form.as_p }}
-            <!-- {{ image_form.non_form_errors }}
-            {% for form in image_form %}
-                {{ form.id }}
-                <div class="inline {{ image_form.prefix }}">
-                    {{ form.image.errors }}
-                    {{ form.image.label_tag }}
-                    {{ form.image }}
-                </div>
-            {% endfor %} -->
+            {{ image_form|crispy }}
         </fieldset>
 
         <input type="submit" value="Create" class="btn btn-outline-dark">

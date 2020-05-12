@@ -11,6 +11,7 @@ class PostModelForm(forms.ModelForm):
         fields = [
             'cover_photo',
             'title',
+            'category',
             'body',
             'status',
             'restrict_comments',
@@ -22,6 +23,7 @@ class PostEditForm(forms.ModelForm):
         fields = [
             'cover_photo',
             'title',
+            'category',
             'body',
             'status',
             'restrict_comments',
