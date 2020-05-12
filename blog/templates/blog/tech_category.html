@@ -1,0 +1,33 @@
+{% extends 'base_layout.html' %}
+
+{% block title %} 
+Technology|{{ block.super }}
+{% endblock %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        {% for p in tech_posts %}
+            <div class="col-12 col-md-6">
+                <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative posts">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <h5 class="mb-2 text-strong text-weight-bold text-primary">{{ p.category|capfirst }}</h5>
+                        <h6 class="mb-0 text-srong">{{ p.title }}</h6>
+                        <div class="mb-1 text-muted">{{ p.created }}</div>
+                        <p class="mb-auto">{{ p.snippet }}<br>Author: {{ p.author }}</p>
+                        <a href="{% url 'blog:post_detail' slug=p.slug pk=p.id %}" class="stretched-link">Read More</a>
+                    </div>
+                    <div class="col-auto d-none d-lg-block">
+                        <img src="{{ p.cover_photo.url }}" alt="Image Not Found" class="img-thumbnail" width="200" height="500"/>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="container-fluid">
+                <h3>No result(s) found matching search: <i>"{{ request.GET.q }}"</i></h3>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% include 'blog/pagination.html' with posts=page_obj %}
+{% endblock %}
