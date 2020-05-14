@@ -17,7 +17,7 @@ Welcome to {{ block.super }}
                     <img class="bd-placeholder-img" src="{{ p.cover_photo.url }}" width="500px" height="500px" role="img">
                     <div class="container">
                         <div class="carousel-caption">
-                            <h1>{{ p.title }}</h1>
+                            <h1 class="text-dark">{{ p.title }}</h1>
                             <p class="text-primary">{{ p.body|slice:':150' }}...</p>
                             <p><a href="{% url 'blog:post_detail' slug=p.slug pk=p.id%}" class="btn btn-lg btn-primary" role="button">Continue reading</a></p>
                         </div>
@@ -29,7 +29,7 @@ Welcome to {{ block.super }}
                     <img class="bd-placeholder-img" src="{{ p.cover_photo.url }}" width="500px" height="500px" role="img">
                     <div class="container">
                         <div class="carousel-caption">
-                            <h1>{{ p.title }}</h1>
+                            <h1 class="text-dark">{{ p.title }}</h1>
                             <p class="text-primary">{{ p.body|slice:':150' }}...</p>
                             <p><a href="{% url 'blog:post_detail' slug=p.slug pk=p.id%}" class="btn btn-lg btn-primary" role="button">Continue reading</a></p>
                         </div>

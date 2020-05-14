@@ -43,7 +43,13 @@ class SignUpForm(UserCreationForm):
             'password1',
             'password2',
         ]
-
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        email_qs = User.objects.filter(email=email)
+        if email_qs.exists():
+            raise forms.ValidationError(
+                'This e-mail has already been used by another user'
+            )
 
 class UserLoginForm(forms.Form):
     username = forms.CharField(label="")
