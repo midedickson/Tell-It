@@ -11,7 +11,7 @@ Faker==4.0.2
 idna==2.9
 mysqlclient==1.4.6
 oauthlib==3.1.0
-Pillow==7.1.1
+Pillow==8.1.1
 pycparser==2.20
 PyJWT==1.7.1
 python-dateutil==2.8.1
